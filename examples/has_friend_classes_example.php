@@ -92,7 +92,7 @@ namespace {
         public function switchLight(TrafficLight $trafficLight): void
         {
             // Access the private method.
-            $trafficLight->changeLight(new RedLight());
+            $trafficLight->changeLight(new GreenLight());
             $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
