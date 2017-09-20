@@ -6,6 +6,10 @@ trait HasFriendClasses
 {
     public function __call($name, $arguments)
     {
+        if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
+            return $this->$name(...$arguments);
+        }
+
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         $context = '';
 
@@ -29,6 +33,10 @@ trait HasFriendClasses
 
     public static function __callStatic($name, $arguments)
     {
+        if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
+            return self::$name(...$arguments);
+        }
+
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         $context = '';
 
@@ -52,6 +60,10 @@ trait HasFriendClasses
 
     public function __get($name)
     {
+        if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
+            return $this->$name;
+        }
+
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         $context = '';
 
@@ -75,6 +87,11 @@ trait HasFriendClasses
 
     public function __set($name, $value)
     {
+        if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
+            $this->$name = $value;
+            return;
+        }
+
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         $context = '';
 
