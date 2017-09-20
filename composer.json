@@ -1,0 +1,22 @@
+{
+  "name": "marein/php-friend-visiblity",
+  "description": "Implementation of the friend keyword in PHP.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Markus Reinhold",
+      "email": "markusreinhold@icloud.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Marein\\FriendVisibility\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.0"
+  }
+}
