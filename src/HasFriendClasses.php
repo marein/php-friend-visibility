@@ -8,12 +8,13 @@ trait HasFriendClasses
     {
         return $this->executeIfTheCallerIsFriend(function () use ($name, $arguments) {
             $this->$name(...$arguments);
-        }, function () use ($name) {
+        }, function ($context) use ($name) {
             throw new FriendException(
                 sprintf(
-                    'Cannot access method %s::%s()',
+                    'Cannot access method %s::%s() from context \'%s\'',
                     get_class($this),
-                    $name
+                    $name,
+                    $context
                 )
             );
         });
@@ -22,10 +23,11 @@ trait HasFriendClasses
     public static function __callStatic($name, $arguments)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $context = '';
 
         // The information is stored in the third index.
         if (count($trace) > 1) {
-            $callerClass = $trace[1]['class'];
+            $callerClass = $context = $trace[1]['class'];
 
             if (in_array($callerClass, self::FRIEND_CLASSES)) {
                 return self::$name(...$arguments);
@@ -34,9 +36,10 @@ trait HasFriendClasses
 
         throw new FriendException(
             sprintf(
-                'Cannot access method %s::%s()',
+                'Cannot access method %s::%s() from context \'%s\'',
                 __CLASS__,
-                $name
+                $name,
+                $context
             )
         );
     }
@@ -45,12 +48,13 @@ trait HasFriendClasses
     {
         return $this->executeIfTheCallerIsFriend(function () use ($name) {
             return $this->$name;
-        }, function () use ($name) {
+        }, function ($context) use ($name) {
             throw new FriendException(
                 sprintf(
-                    'Cannot access property %s::$%s',
+                    'Cannot access property %s::$%s from context \'%s\'',
                     get_class($this),
-                    $name
+                    $name,
+                    $context
                 )
             );
         });
@@ -60,12 +64,13 @@ trait HasFriendClasses
     {
         $this->executeIfTheCallerIsFriend(function () use ($name, $value) {
             $this->$name = $value;
-        }, function () use ($name) {
+        }, function ($context) use ($name) {
             throw new FriendException(
                 sprintf(
-                    'Cannot access property %s::$%s',
+                    'Cannot access property %s::$%s from context \'%s\'',
                     get_class($this),
-                    $name
+                    $name,
+                    $context
                 )
             );
         });
@@ -74,16 +79,17 @@ trait HasFriendClasses
     private function executeIfTheCallerIsFriend(callable $if, callable $else)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        $context = '';
 
         // The information is stored in the third index.
         if (count($trace) > 2) {
-            $callerClass = $trace[2]['class'];
+            $callerClass = $context = $trace[2]['class'];
 
             if (in_array($callerClass, self::FRIEND_CLASSES)) {
                 return $if();
             }
         }
 
-        $else();
+        $else($context);
     }
 }
