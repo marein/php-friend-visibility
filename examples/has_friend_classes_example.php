@@ -35,6 +35,11 @@ namespace {
             echo 'The traffic light is ' . RedLight::class . '.' . PHP_EOL;
         }
 
+        private function changeLight(Light $light): void
+        {
+            $this->light = $light;
+        }
+
         public function switchLight(): void
         {
             $this->light->switchLight($this);
@@ -50,6 +55,7 @@ namespace {
     {
         public function switchLight(TrafficLight $trafficLight): void
         {
+            // Access the private property.
             $trafficLight->light = new YellowLight();
             echo 'The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL;
         }
@@ -59,7 +65,8 @@ namespace {
     {
         public function switchLight(TrafficLight $trafficLight): void
         {
-            $trafficLight->light = new RedLight();
+            // Access the private method.
+            $trafficLight->changeLight(new RedLight());
             echo 'The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL;
         }
     }
@@ -68,6 +75,7 @@ namespace {
     {
         public function switchLight(TrafficLight $trafficLight): void
         {
+            // Access the private property.
             $trafficLight->light = new RedYellowLight();
             echo 'The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL;
         }
@@ -77,7 +85,8 @@ namespace {
     {
         public function switchLight(TrafficLight $trafficLight): void
         {
-            $trafficLight->light = new GreenLight();
+            // Access the private method.
+            $trafficLight->changeLight(new RedLight());
             echo 'The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL;
         }
     }
@@ -99,6 +108,10 @@ namespace {
             // If you enable the next line, an exception will be thrown. This class has no privileges to
             // access the private property.
 //            $trafficLight->light;
+
+            // If you enable the next line, an exception will be thrown. This class has no privileges to
+            // access the private method.
+//            $trafficLight->changeLight(new RedLight());
         }
     }
 

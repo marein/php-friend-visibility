@@ -4,6 +4,21 @@ namespace Marein\FriendVisibility;
 
 trait HasFriendClasses
 {
+    public function __call($name, $arguments)
+    {
+        return $this->executeIfTheCallerIsFriend(function () use ($name, $arguments) {
+            $this->$name(...$arguments);
+        }, function () use ($name) {
+            throw new FriendException(
+                sprintf(
+                    'Cannot access method %s::%s()',
+                    get_class($this),
+                    $name
+                )
+            );
+        });
+    }
+
     public function __get($name)
     {
         return $this->executeIfTheCallerIsFriend(function () use ($name) {
