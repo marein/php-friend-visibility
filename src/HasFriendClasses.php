@@ -19,6 +19,28 @@ trait HasFriendClasses
         });
     }
 
+    public static function __callStatic($name, $arguments)
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+
+        // The information is stored in the third index.
+        if (count($trace) > 1) {
+            $callerClass = $trace[1]['class'];
+
+            if (in_array($callerClass, self::FRIEND_CLASSES)) {
+                return self::$name(...$arguments);
+            }
+        }
+
+        throw new FriendException(
+            sprintf(
+                'Cannot access method %s::%s()',
+                __CLASS__,
+                $name
+            )
+        );
+    }
+
     public function __get($name)
     {
         return $this->executeIfTheCallerIsFriend(function () use ($name) {

@@ -44,6 +44,12 @@ namespace {
         {
             $this->light->switchLight($this);
         }
+
+        // This method exists just for the illustration that you can also access private static methods.
+        private static function say($string): void
+        {
+            echo $string;
+        }
     }
 
     interface Light
@@ -57,7 +63,7 @@ namespace {
         {
             // Access the private property.
             $trafficLight->light = new YellowLight();
-            echo 'The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL;
+            $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
 
@@ -67,7 +73,7 @@ namespace {
         {
             // Access the private method.
             $trafficLight->changeLight(new RedLight());
-            echo 'The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL;
+            $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
 
@@ -77,7 +83,7 @@ namespace {
         {
             // Access the private property.
             $trafficLight->light = new RedYellowLight();
-            echo 'The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL;
+            $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
 
@@ -87,7 +93,7 @@ namespace {
         {
             // Access the private method.
             $trafficLight->changeLight(new RedLight());
-            echo 'The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL;
+            $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
 
