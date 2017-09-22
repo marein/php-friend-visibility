@@ -27,14 +27,15 @@ namespace {
             echo 'The traffic light is ' . RedLight::class . '.' . PHP_EOL;
         }
 
-        private function changeLight(Light $light): void
-        {
-            $this->light = $light;
-        }
-
         public function switchLight(): void
         {
             $this->light->switchLight($this);
+        }
+
+        // This method exists just for the illustration that you can also access private methods.
+        private function changeLight(Light $light): void
+        {
+            $this->light = $light;
         }
 
         // This method exists just for the illustration that you can also access private static methods.
@@ -87,7 +88,7 @@ namespace {
         {
             // Access the private property.
             $trafficLight->light = new RedYellowLight();
-//            $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
+            $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
 
