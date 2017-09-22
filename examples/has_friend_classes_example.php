@@ -15,17 +15,9 @@ namespace {
 
     class TrafficLight
     {
-        // Include the trait for php magic methods.
+        // Include the trait for php magic methods. The magic methods make use of self::friendClasses().
+        // Take a look below how this is implemented.
         use HasFriendClasses;
-
-        // This constant is a MUST have if you use the trait. The trait will use it to determine if the caller is
-        // one of these classes. Only these classes have access to private properties and methods.
-        private const FRIEND_CLASSES = [
-            RedLight::class,
-            RedYellowLight::class,
-            YellowLight::class,
-            GreenLight::class
-        ];
 
         private $light;
 
@@ -49,6 +41,18 @@ namespace {
         private static function say($string): void
         {
             echo $string;
+        }
+
+        // This function is a MUST have if you use the trait. The trait will use it to determine if the caller is
+        // one of these classes. Only these classes have access to private and protected properties and methods.
+        protected static function friendClasses(): array
+        {
+            return [
+                RedLight::class,
+                RedYellowLight::class,
+                YellowLight::class,
+                GreenLight::class
+            ];
         }
     }
 
@@ -83,7 +87,7 @@ namespace {
         {
             // Access the private property.
             $trafficLight->light = new RedYellowLight();
-            $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
+//            $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
 

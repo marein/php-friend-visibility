@@ -4,6 +4,13 @@ namespace Marein\FriendVisibility;
 
 trait HasFriendClasses
 {
+    /**
+     * Returns the friend classes, which can access private and protected properties and methods.
+     *
+     * @return array
+     */
+    abstract protected static function friendClasses(): array;
+
     public function __call($name, $arguments)
     {
         if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
@@ -16,7 +23,7 @@ trait HasFriendClasses
         if (count($trace) > 1) {
             $callerClass = $context = $trace[1]['class'];
 
-            if (in_array($callerClass, self::FRIEND_CLASSES)) {
+            if (in_array($callerClass, self::friendClasses())) {
                 return $this->$name(...$arguments);
             }
         }
@@ -43,7 +50,7 @@ trait HasFriendClasses
         if (count($trace) > 1) {
             $callerClass = $context = $trace[1]['class'];
 
-            if (in_array($callerClass, self::FRIEND_CLASSES)) {
+            if (in_array($callerClass, self::friendClasses())) {
                 return self::$name(...$arguments);
             }
         }
@@ -70,7 +77,7 @@ trait HasFriendClasses
         if (count($trace) > 1) {
             $callerClass = $context = $trace[1]['class'];
 
-            if (in_array($callerClass, self::FRIEND_CLASSES)) {
+            if (in_array($callerClass, self::friendClasses())) {
                 return $this->$name;
             }
         }
@@ -98,7 +105,7 @@ trait HasFriendClasses
         if (count($trace) > 1) {
             $callerClass = $context = $trace[1]['class'];
 
-            if (in_array($callerClass, self::FRIEND_CLASSES)) {
+            if (in_array($callerClass, self::friendClasses())) {
                 $this->$name = $value;
                 return;
             }
