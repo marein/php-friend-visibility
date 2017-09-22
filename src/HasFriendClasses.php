@@ -11,7 +11,18 @@ trait HasFriendClasses
      */
     abstract protected static function friendClasses(): array;
 
-    public function __call($name, $arguments)
+    /**
+     * If the global debug mode is disabled. This method exposes all non accessible methods.
+     * If the global debug mode is enabled, only friend classes returned by self::friendClasses() can
+     * access non accessible methods.
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     * @throws FriendException
+     */
+    public function __call(string $name, array $arguments)
     {
         if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
             return $this->$name(...$arguments);
@@ -38,7 +49,18 @@ trait HasFriendClasses
         );
     }
 
-    public static function __callStatic($name, $arguments)
+    /**
+     * If the global debug mode is disabled. This method exposes all non accessible static methods.
+     * If the global debug mode is enabled, only friend classes returned by self::friendClasses() can
+     * access non accessible static methods.
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     * @throws FriendException
+     */
+    public static function __callStatic(string $name, array $arguments)
     {
         if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
             return self::$name(...$arguments);
@@ -65,7 +87,17 @@ trait HasFriendClasses
         );
     }
 
-    public function __get($name)
+    /**
+     * If the global debug mode is disabled. This method exposes all non accessible properties.
+     * If the global debug mode is enabled, only friend classes returned by self::friendClasses() can
+     * access non accessible properties.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     * @throws FriendException
+     */
+    public function __get(string $name)
     {
         if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
             return $this->$name;
@@ -92,7 +124,17 @@ trait HasFriendClasses
         );
     }
 
-    public function __set($name, $value)
+    /**
+     * If the global debug mode is disabled. This method exposes all non accessible properties.
+     * If the global debug mode is enabled, only friend classes returned by self::friendClasses() can
+     * access non accessible properties.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @throws FriendException
+     */
+    public function __set(string $name, $value)
     {
         if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
             $this->$name = $value;
