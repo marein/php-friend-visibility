@@ -29,6 +29,8 @@ final class FriendConfiguration
     }
 
     /**
+     * Get an instance of FriendConfiguration.
+     *
      * @return FriendConfiguration
      */
     public static function instance(): FriendConfiguration
