@@ -68,6 +68,7 @@ namespace {
         {
             // Access the private property.
             $trafficLight->light = new YellowLight();
+            // Access the private static method.
             $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
@@ -78,6 +79,7 @@ namespace {
         {
             // Access the private method.
             $trafficLight->changeLight(new RedLight());
+            // Access the private static method.
             $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
@@ -88,6 +90,7 @@ namespace {
         {
             // Access the private property.
             $trafficLight->light = new RedYellowLight();
+            // Access the private static method.
             $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
@@ -98,6 +101,7 @@ namespace {
         {
             // Access the private method.
             $trafficLight->changeLight(new GreenLight());
+            // Access the private static method.
             $trafficLight::say('The traffic light turns to ' . get_class($trafficLight->light) . '.' . PHP_EOL);
         }
     }
