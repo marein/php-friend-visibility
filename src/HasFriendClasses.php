@@ -24,29 +24,12 @@ trait HasFriendClasses
      */
     public function __call(string $name, array $arguments)
     {
-        if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
-            return $this->$name(...$arguments);
-        }
-
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        $context = '';
-
-        if (count($trace) > 1) {
-            $callerClass = $context = $trace[1]['class'];
-
-            if (in_array($callerClass, self::friendClasses())) {
-                return $this->$name(...$arguments);
-            }
-        }
-
-        throw new FriendException(
-            sprintf(
-                'Cannot access method %s::%s() from context \'%s\'',
-                get_class($this),
-                $name,
-                $context
-            )
+        self::throwExceptionIfNotCallable(
+            'Cannot access method %s::%s() from context \'%s\'',
+            $name
         );
+
+        return $this->$name(...$arguments);
     }
 
     /**
@@ -62,29 +45,12 @@ trait HasFriendClasses
      */
     public static function __callStatic(string $name, array $arguments)
     {
-        if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
-            return self::$name(...$arguments);
-        }
-
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        $context = '';
-
-        if (count($trace) > 1) {
-            $callerClass = $context = $trace[1]['class'];
-
-            if (in_array($callerClass, self::friendClasses())) {
-                return self::$name(...$arguments);
-            }
-        }
-
-        throw new FriendException(
-            sprintf(
-                'Cannot access method %s::%s() from context \'%s\'',
-                __CLASS__,
-                $name,
-                $context
-            )
+        self::throwExceptionIfNotCallable(
+            'Cannot access method %s::%s() from context \'%s\'',
+            $name
         );
+
+        return self::$name(...$arguments);
     }
 
     /**
@@ -99,29 +65,12 @@ trait HasFriendClasses
      */
     public function __get(string $name)
     {
-        if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
-            return $this->$name;
-        }
-
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        $context = '';
-
-        if (count($trace) > 1) {
-            $callerClass = $context = $trace[1]['class'];
-
-            if (in_array($callerClass, self::friendClasses())) {
-                return $this->$name;
-            }
-        }
-
-        throw new FriendException(
-            sprintf(
-                'Cannot access property %s::$%s from context \'%s\'',
-                get_class($this),
-                $name,
-                $context
-            )
+        self::throwExceptionIfNotCallable(
+            'Cannot access property %s::$%s from context \'%s\'',
+            $name
         );
+
+        return $this->$name;
     }
 
     /**
@@ -136,30 +85,38 @@ trait HasFriendClasses
      */
     public function __set(string $name, $value)
     {
-        if (!FriendConfiguration::instance()->isDebugModeEnabled()) {
-            $this->$name = $value;
-            return;
-        }
+        self::throwExceptionIfNotCallable(
+            'Cannot access property %s::$%s from context \'%s\'',
+            $name
+        );
 
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        $context = '';
+        $this->$name = $value;
+    }
 
-        if (count($trace) > 1) {
-            $callerClass = $context = $trace[1]['class'];
+    /**
+     * Throw an exception if not in development mode and the caller is not a friend class.
+     *
+     * @param string $message
+     * @param string $member
+     *
+     * @throws FriendException
+     */
+    private static function throwExceptionIfNotCallable(string $message, string $member): void
+    {
+        if (FriendConfiguration::instance()->isDebugModeEnabled()) {
+            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+            $callerClass = $trace[2]['class'] ?? '';
 
-            if (in_array($callerClass, self::friendClasses())) {
-                $this->$name = $value;
-                return;
+            if (!$callerClass || !in_array($callerClass, self::friendClasses())) {
+                throw new FriendException(
+                    sprintf(
+                        $message,
+                        __CLASS__,
+                        $member,
+                        $callerClass
+                    )
+                );
             }
         }
-
-        throw new FriendException(
-            sprintf(
-                'Cannot access property %s::$%s from context \'%s\'',
-                get_class($this),
-                $name,
-                $context
-            )
-        );
     }
 }
