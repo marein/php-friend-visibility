@@ -33,7 +33,7 @@ I've created this repository because I want an easy installation.
 ## Installation
 
 ```
-composer require marein/php-friend-visiblity
+composer require marein/php-friend-visibility
 ```
 
 ## Usage
