@@ -12,8 +12,8 @@ trait HasFriendClasses
     abstract protected static function friendClasses(): array;
 
     /**
-     * If the global debug mode is disabled. This method exposes all non accessible methods.
-     * If the global debug mode is enabled, only friend classes returned by self::friendClasses() can
+     * If in production mode. This method exposes all non accessible methods.
+     * If not in production mode, only friend classes returned by self::friendClasses() can
      * access non accessible methods.
      *
      * @param string $name
@@ -33,8 +33,8 @@ trait HasFriendClasses
     }
 
     /**
-     * If the global debug mode is disabled. This method exposes all non accessible static methods.
-     * If the global debug mode is enabled, only friend classes returned by self::friendClasses() can
+     * If in production mode. This method exposes all non accessible static methods.
+     * If not in production mode, only friend classes returned by self::friendClasses() can
      * access non accessible static methods.
      *
      * @param string $name
@@ -54,8 +54,8 @@ trait HasFriendClasses
     }
 
     /**
-     * If the global debug mode is disabled. This method exposes all non accessible properties.
-     * If the global debug mode is enabled, only friend classes returned by self::friendClasses() can
+     * If in production mode. This method exposes all non accessible properties.
+     * If not in production mode, only friend classes returned by self::friendClasses() can
      * access non accessible properties.
      *
      * @param string $name
@@ -74,8 +74,8 @@ trait HasFriendClasses
     }
 
     /**
-     * If the global debug mode is disabled. This method exposes all non accessible properties.
-     * If the global debug mode is enabled, only friend classes returned by self::friendClasses() can
+     * If in production mode. This method exposes all non accessible properties.
+     * If not in production mode, only friend classes returned by self::friendClasses() can
      * access non accessible properties.
      *
      * @param string $name
@@ -94,7 +94,7 @@ trait HasFriendClasses
     }
 
     /**
-     * Throw an exception if not in development mode and the caller is not a friend class.
+     * Throw an exception if not in production mode and the caller is not a friend class.
      *
      * @param string $message
      * @param string $member
@@ -103,7 +103,7 @@ trait HasFriendClasses
      */
     private static function throwExceptionIfNotCallable(string $message, string $member): void
     {
-        if (FriendConfiguration::instance()->isDebugModeEnabled()) {
+        if (!FriendConfiguration::instance()->isProductionModeEnabled()) {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
             $callerClass = $trace[2]['class'] ?? '';
 

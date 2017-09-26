@@ -106,9 +106,9 @@ class HasFriendClassesTest extends TestCase
     /**
      * @test
      */
-    public function everythingShouldBeAccessibleIfNotInDebugMode(): void
+    public function everythingShouldBeAccessibleInProductionMode(): void
     {
-        FriendConfiguration::instance()->disableDebugMode();
+        FriendConfiguration::instance()->enableProductionMode();
 
         $luke = new \Luke();
         $luke->daddy = 'Anakin Skywalker';
@@ -128,6 +128,6 @@ class HasFriendClassesTest extends TestCase
             $luke::hairColor()
         );
 
-        FriendConfiguration::instance()->enableDebugMode();
+        FriendConfiguration::instance()->disableProductionMode();
     }
 }

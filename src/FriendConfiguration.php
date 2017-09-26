@@ -15,12 +15,12 @@ final class FriendConfiguration
     /**
      * @var bool
      */
-    private $debugMode;
+    private $isProductionModeEnabled;
 
     // This class is not newable.
     private function __construct()
     {
-        $this->debugMode = true;
+        $this->isProductionModeEnabled = false;
     }
 
     // This class is not cloneable.
@@ -43,28 +43,28 @@ final class FriendConfiguration
     }
 
     /**
-     * Enable the debug mode. Properties and methods are only accessible from friend classes.
+     * Enable the production mode. Properties and methods are accessible from everywhere. This breaks encapsulation.
      */
-    public function enableDebugMode(): void
+    public function enableProductionMode(): void
     {
-        $this->debugMode = true;
+        $this->isProductionModeEnabled = true;
     }
 
     /**
-     * Disable the debug mode. Properties and methods are accessible from everywhere.
+     * Disable the production mode. Properties and methods are only accessible from friend classes.
      */
-    public function disableDebugMode(): void
+    public function disableProductionMode(): void
     {
-        $this->debugMode = false;
+        $this->isProductionModeEnabled = false;
     }
 
     /**
-     * Returns true if the debug mode is enabled, false otherwise.
+     * Returns true if the production mode is enabled, false otherwise.
      *
      * @return bool
      */
-    public function isDebugModeEnabled(): bool
+    public function isProductionModeEnabled(): bool
     {
-        return $this->debugMode;
+        return $this->isProductionModeEnabled;
     }
 }
