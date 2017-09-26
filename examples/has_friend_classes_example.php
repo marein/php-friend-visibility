@@ -38,13 +38,14 @@ namespace {
             $this->light = $light;
         }
 
-        // This method exists just for the illustration that you can also access private static methods.
+        // This method exists just for the illustration that you can also access private static methods. This surely
+        // not belongs here.
         private static function say($string): void
         {
             echo $string;
         }
 
-        // This function is a MUST have if you use the trait. The trait will use it to determine if the caller is
+        // This function is a MUST HAVE if you use the trait. The trait will use it to determine if the caller is
         // one of these classes. Only these classes have access to private and protected properties and methods.
         protected static function friendClasses(): array
         {
