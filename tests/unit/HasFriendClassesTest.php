@@ -6,7 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 class HasFriendClassesTest extends TestCase
 {
-    public function setUp()
+    /**
+     * Load required classes.
+     */
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -58,7 +61,7 @@ class HasFriendClassesTest extends TestCase
     /**
      * @test
      */
-    public function itShouldNoBePossibleToAccessPrivateMethodsIfNoFriend(): void
+    public function itShouldNotBePossibleToAccessPrivateMethodsIfNoFriend(): void
     {
         $this->expectException(FriendException::class);
 
