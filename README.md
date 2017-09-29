@@ -1,5 +1,12 @@
 # php-friend-visibility
 
+__Table of contents__
+
+* [Foreword / Why this package?](#foreword--why-this-package)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Performance](#performance)
+
 ## Foreword / Why this package?
 I love php. But sometimes I miss some features I know from other languages like CSharp, Java or C++.
 These features are, for example, friend classes, package visibility and so on.
@@ -50,7 +57,7 @@ This package use \[[debug_backtrace](http://php.net/manual/en/function.debug-bac
 [__call](http://php.net/manual/de/language.oop5.overloading.php#object.call),
 [__callStatic](http://php.net/manual/de/language.oop5.overloading.php#object.callstatic)\].
 You may should do a performance test for your project. However, you can enable the production mode with
-                                                      
+
 ```php
 <?php
 
